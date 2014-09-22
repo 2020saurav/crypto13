@@ -3,23 +3,23 @@
 include("dbconnect.php");
 session_start();
 
-$lvlc=$_POST['level'];  
+$currentLevel=$_POST['level'];  
 $answer=$_POST['ans'];
 
-if(isset($_SESSION['user']) && isset($lvlc) && isset($answer))
+if(isset($_SESSION['user']) && isset($currentLevel) && isset($answer))
 {
   $ip=$_SERVER["REMOTE_ADDR"]; 
   date_default_timezone_set('Asia/Calcutta');
   $today = date("F j, Y, g:i a");
   $user=$_SESSION['user'];
-  $lvlc=$_POST['level'];  
+  $currentLevel=$_POST['level'];  
   $answer=md5($_POST['ans']);
-  $result=mysql_query("select * from qnsans where level='$lvlc' AND ans='$answer'", $db);
-  $lev=mysql_query("select * from players where username='$user'", $db);
-  $lev2=mysql_fetch_array($lev);
-  $levmax=$lev2['level']; 
+  $questAnsMatch=mysql_query("select * from qnsans where level='$currentLevel' AND ans='$answer'", $db);
+  $userRow=mysql_query("select * from players where username='$user'", $db);
+  $userInfo=mysql_fetch_array($userRow);
+  $presentActualLevel=$userInfo['level']; 
 
-  switch ($lev2['pool']) 
+  switch ($userInfo['pool']) 
   {
     case 'A':
       $pool="Marathas";
@@ -38,20 +38,20 @@ if(isset($_SESSION['user']) && isset($lvlc) && isset($answer))
       break;
   }
 
-  if($lvlc>$levmax)
+  if($currentLevel>$presentActualLevel)
   {
     header("Location: userhome.php"); 
   }
 
-  $rowCheck = mysql_num_rows($result);
-  $lvlcup = $lvlc+1; 
+  $rowCheck = mysql_num_rows($questAnsMatch);
+  $nextLevel = $currentLevel+1; 
 
-  if($rowCheck ==1 && $lvlcup>$levmax) 
+  if($rowCheck ==1 && $nextLevel>$presentActualLevel) 
   {
-    $update=mysql_query("UPDATE players SET level='$lvlcup' WHERE username='$user'", $db);
+    $update=mysql_query("UPDATE players SET level='$nextLevel' WHERE username='$user'", $db);
     $filename="log.txt";
     $file=fopen($filename,"a");
-    fwrite($file,($user."\t".$lvlc."\t ".$pool."\t".$ip."\t".$today."\n"));
+    fwrite($file,($user."\t".$currentLevel."\t ".$pool."\t".$ip."\t".$today."\n"));
     header("Location: userhome.php");
   }
   else

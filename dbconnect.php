@@ -1,7 +1,7 @@
 <?php
 $dbHost = "localhost";
 $dbUser = "root";
-$dbPass = "";
+$dbPass = "root";
 $dbDatabase = "crypto";
 
 //connect to the database
