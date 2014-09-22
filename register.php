@@ -33,7 +33,7 @@ else {
 			else {
 
 				include_once("includes/header.php");
-			echo "<div id=\"login\" style=\"width:320px;float:left;margin-left:35%\"> Passwords did not match<br/>";
+			echo "<div id='login' style='width:320px;float:left;margin-left:35%'> Passwords did not match<br/>";
 			echo "<a href='newuser.php'>Click here to register again</a></div>";
 			include_once("includes/footer.php");
 
@@ -42,7 +42,7 @@ else {
 		else {
 
 			include_once("includes/header.php");
-			echo "<div id=\"login\" style=\"width:320px;float:left;margin-left:35%\">";
+			echo "<div id='login' style='width:320px;float:left;margin-left:35%'>";
 
 			die("Username or email already registered! Use a different one.");
 			echo "<br/><a href='newuser.php'>Click here to register</a></div>";
